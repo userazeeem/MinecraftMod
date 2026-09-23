@@ -11,11 +11,13 @@ import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 
 public class BackWeaponFeatureRenderer extends RenderLayer<AvatarRenderState, EntityModel<AvatarRenderState>> {
 
     private final ItemModelResolver itemModelResolver;
     private final ItemStackRenderState backItemState = new ItemStackRenderState();
+    private ItemStack rememberedWeapon = ItemStack.EMPTY;
 
     public BackWeaponFeatureRenderer(RenderLayerParent<AvatarRenderState, EntityModel<AvatarRenderState>> parent,
                                       ItemModelResolver itemModelResolver) {
@@ -25,13 +27,18 @@ public class BackWeaponFeatureRenderer extends RenderLayer<AvatarRenderState, En
 
     @Override
     public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot) {
-        if (state.rightHandItemStack.isEmpty()) {
+        if (!state.rightHandItemStack.isEmpty()) {
+            this.rememberedWeapon = state.rightHandItemStack;
+            return;
+        }
+
+        if (this.rememberedWeapon.isEmpty()) {
             return;
         }
 
         this.itemModelResolver.updateForTopItem(
                 this.backItemState,
-                state.rightHandItemStack,
+                this.rememberedWeapon,
                 ItemDisplayContext.FIXED,
                 null,
                 null,
