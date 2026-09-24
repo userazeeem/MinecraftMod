@@ -21,10 +21,16 @@ public abstract class PlayerModelMixin {
             return;
         }
 
-        float extra = Mth.sin(visibility * (float) Math.PI) * 1.4F;
+        // Bell curve: 0 at both ends, peak in the middle of the transition.
+        float reach = Mth.sin(visibility * (float) Math.PI);
 
         PlayerModel self = (PlayerModel) (Object) this;
-        self.rightArm.xRot -= extra;
-        self.rightArm.yRot -= extra * 0.3F;
+
+        // Raise the arm up and back, as if reaching over the shoulder.
+        self.rightArm.xRot -= reach * 2.1F;
+        // Sweep it inward across the body toward the opposite shoulder blade.
+        self.rightArm.yRot -= reach * 0.9F;
+        // Slight roll for a more natural wrist/shoulder twist.
+        self.rightArm.zRot -= reach * 0.35F;
     }
 }
