@@ -52,7 +52,7 @@ public class BackWeaponFeatureRenderer extends RenderLayer<AvatarRenderState, En
     private int axePendingTicks = 0;
 
     public BackWeaponFeatureRenderer(RenderLayerParent<AvatarRenderState, EntityModel<AvatarRenderState>> parent,
-                                     ItemModelResolver itemModelResolver) {
+                                      ItemModelResolver itemModelResolver) {
         super(parent);
         this.itemModelResolver = itemModelResolver;
     }
